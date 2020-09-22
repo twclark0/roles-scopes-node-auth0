@@ -9,9 +9,7 @@ import history from "./utils/history";
 
 const onRedirectCallback = (appState) => {
   history.push(
-    appState && appState.returnTo
-      ? appState.returnTo
-      : window.location.pathname
+    appState && appState.returnTo ? appState.returnTo : window.location.pathname
   );
 };
 
@@ -22,6 +20,7 @@ ReactDOM.render(
     audience={config.audience}
     redirectUri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
+    scope="read:messages"
   >
     <App />
   </Auth0Provider>,

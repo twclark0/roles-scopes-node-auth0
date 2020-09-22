@@ -80,7 +80,10 @@ const ExternalApiComponent = () => {
 
   const callRoleBasedApi = async () => {
     try {
-      const token = await getAccessTokenSilently();
+      const token = await getAccessTokenSilently({
+        audience: config.audience,
+        scope: "read:messages"
+      });
       const response = await fetch(`${apiOrigin}/api/private/role`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -134,7 +137,7 @@ const ExternalApiComponent = () => {
             You need to{" "}
             <a
               href="#/"
-              class="alert-link"
+              className="alert-link"
               onClick={(e) => handle(e, handleConsent)}
             >
               consent to get access to users api
@@ -147,7 +150,7 @@ const ExternalApiComponent = () => {
             You need to{" "}
             <a
               href="#/"
-              class="alert-link"
+              className="alert-link"
               onClick={(e) => handle(e, handleLoginAgain)}
             >
               log in again
