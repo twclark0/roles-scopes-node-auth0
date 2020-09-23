@@ -127,8 +127,6 @@ const ExternalApiComponent = () => {
     fn();
   };
 
-  console.log(state.apiMessage, state.showResult);
-
   return (
     <>
       <div className="mb-5">

@@ -52,7 +52,7 @@ app.get("/api/private", checkJwt, (req, res) => {
 
 app.get("/api/private/role", checkJwt, checkScopes, (req, res) => {
   res.send({
-    msg: "Your access token was successfully validated!"
+    msg: "Your access token contains the correct scope!"
   });
 });
 
