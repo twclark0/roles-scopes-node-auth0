@@ -80,10 +80,7 @@ const ExternalApiComponent = () => {
 
   const callRoleBasedApi = async () => {
     try {
-      const token = await getAccessTokenSilently({
-        audience: config.audience,
-        scope: "read:messages"
-      });
+      const token = await getAccessTokenSilently();
       const response = await fetch(`${apiOrigin}/api/private/role`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -162,16 +159,21 @@ const ExternalApiComponent = () => {
           APIs will call the external API using an access token, and the API
           will validate it using the API's audience value.
         </p>
-
-        <Button color="primary" className="mt-5" onClick={callPublicApi}>
-          Ping Public API
-        </Button>
-        <Button color="primary" className="mt-5" onClick={callPrivateApi}>
-          Ping Private API
-        </Button>
-        <Button color="primary" className="mt-5" onClick={callRoleBasedApi}>
-          Ping Role Based API
-        </Button>
+        <div>
+          <Button color="primary" className="mt-5" onClick={callPublicApi}>
+            Ping Public API
+          </Button>
+        </div>
+        <div>
+          <Button color="primary" className="mt-5" onClick={callPrivateApi}>
+            Ping Private API
+          </Button>
+        </div>
+        <div>
+          <Button color="primary" className="mt-5" onClick={callRoleBasedApi}>
+            Ping Role Based API
+          </Button>
+        </div>
       </div>
 
       <div className="result-block-container">
