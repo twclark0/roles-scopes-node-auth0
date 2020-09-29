@@ -1,5 +1,5 @@
 {
   "domain": "dev-rm3u1yq4.auth0.com",
   "clientId": "e9fM0XhU4468QAURgxj1WD506RNOjXCL",
-  "audience": "https://quickstarts/api"
+  "audience": "example.com"
 }

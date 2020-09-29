@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Button, Alert } from "reactstrap";
-import Highlight from "../components/Highlight";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import config from "../auth_config.json";
-import Loading from "../components/Loading";
 
 const { apiOrigin = "http://localhost:3001" } = config;
 
@@ -14,11 +12,7 @@ const ExternalApiComponent = () => {
     error: null
   });
 
-  const {
-    getAccessTokenSilently,
-    loginWithPopup,
-    getAccessTokenWithPopup
-  } = useAuth0();
+  const { loginWithPopup, getAccessTokenWithPopup } = useAuth0();
 
   const handleConsent = async () => {
     try {
@@ -33,8 +27,6 @@ const ExternalApiComponent = () => {
         error: error.error
       });
     }
-
-    await callPublicApi();
   };
 
   const handleLoginAgain = async () => {
@@ -54,69 +46,16 @@ const ExternalApiComponent = () => {
     await callPublicApi();
   };
 
-  const callPrivateApi = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await fetch(`${apiOrigin}/api/private`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-
-      setState({
-        ...state,
-        showResult: true,
-        apiMessage: responseData
-      });
-    } catch (error) {
-      setState({
-        ...state,
-        error: error.error
-      });
-    }
+  const callPrivateEndpoint = async () => {
+    return;
   };
 
-  const callRoleBasedApi = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await fetch(`${apiOrigin}/api/private/role`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const responseData = await response.json();
-
-      setState({
-        ...state,
-        showResult: true,
-        apiMessage: responseData
-      });
-    } catch (error) {
-      setState({
-        ...state,
-        error: error.error
-      });
-    }
+  const callRoleBasedEndpoint = async () => {
+    return;
   };
 
-  const callPublicApi = async () => {
-    try {
-      const response = await fetch(`${apiOrigin}/api/public`);
-      const responseData = await response.json();
-      setState({
-        ...state,
-        showResult: true,
-        apiMessage: responseData
-      });
-    } catch (error) {
-      setState({
-        ...state,
-        error: error.error
-      });
-    }
+  const callPublicEndpoint = async () => {
+    return;
   };
 
   const handle = (e, fn) => {
@@ -160,18 +99,26 @@ const ExternalApiComponent = () => {
           will validate it using the API's audience value.
         </p>
         <div>
-          <Button color="primary" className="mt-5" onClick={callPublicApi}>
-            Ping Public API
+          <Button color="primary" className="mt-5" onClick={callPublicEndpoint}>
+            Ping Public Endpoint
           </Button>
         </div>
         <div>
-          <Button color="primary" className="mt-5" onClick={callPrivateApi}>
-            Ping Private API
+          <Button
+            color="primary"
+            className="mt-5"
+            onClick={callPrivateEndpoint}
+          >
+            Ping Private Endpoint
           </Button>
         </div>
         <div>
-          <Button color="primary" className="mt-5" onClick={callRoleBasedApi}>
-            Ping Role Based API
+          <Button
+            color="primary"
+            className="mt-5"
+            onClick={callRoleBasedEndpoint}
+          >
+            Ping Role Based Endpoint
           </Button>
         </div>
       </div>
@@ -188,6 +135,4 @@ const ExternalApiComponent = () => {
   );
 };
 
-export default withAuthenticationRequired(ExternalApiComponent, {
-  onRedirecting: () => <Loading />
-});
+export default ExternalApiComponent;
