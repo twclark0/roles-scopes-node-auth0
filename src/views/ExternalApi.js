@@ -8,7 +8,7 @@ const { apiOrigin = "http://localhost:3001" } = config;
 const ExternalApiComponent = () => {
   const [state, setState] = useState({
     showResult: false,
-    apiMessage: "",
+    endpointMessage: "",
     error: null
   });
 
@@ -43,14 +43,10 @@ const ExternalApiComponent = () => {
       });
     }
 
-    await callPublicApi();
+    await callPublicEndpoint();
   };
 
-  const callPrivateEndpoint = async () => {
-    return;
-  };
-
-  const callRoleBasedEndpoint = async () => {
+  const callProtectedEndpoint = async () => {
     return;
   };
 
@@ -107,18 +103,9 @@ const ExternalApiComponent = () => {
           <Button
             color="primary"
             className="mt-5"
-            onClick={callPrivateEndpoint}
+            onClick={callProtectedEndpoint}
           >
-            Ping Private Endpoint
-          </Button>
-        </div>
-        <div>
-          <Button
-            color="primary"
-            className="mt-5"
-            onClick={callRoleBasedEndpoint}
-          >
-            Ping Role Based Endpoint
+            Ping Protected Endpoint
           </Button>
         </div>
       </div>
@@ -127,7 +114,7 @@ const ExternalApiComponent = () => {
         {state.showResult && (
           <div className="result-block" data-testid="api-result">
             <h6 className="muted">Result</h6>
-            {state.apiMessage.msg}
+            {state.endpointMessage.msg}
           </div>
         )}
       </div>
