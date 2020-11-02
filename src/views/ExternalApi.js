@@ -12,7 +12,11 @@ const ExternalApiComponent = () => {
     error: null
   });
 
-  const { loginWithPopup, getAccessTokenWithPopup } = useAuth0();
+  const {
+    loginWithPopup,
+    getAccessTokenWithPopup,
+    getAccessTokenSilently
+  } = useAuth0();
 
   const handleConsent = async () => {
     try {
@@ -47,11 +51,42 @@ const ExternalApiComponent = () => {
   };
 
   const callProtectedEndpoint = async () => {
-    return;
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${apiOrigin}/api/protected`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const responseData = await response.json();
+      setState({
+        ...state,
+        showResult: true,
+        endpointMessage: responseData
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        error: error.error
+      });
+    }
   };
 
   const callPublicEndpoint = async () => {
-    return;
+    try {
+      const response = await fetch(`${apiOrigin}/api/public`);
+      const responseData = await response.json();
+      setState({
+        ...state,
+        showResult: true,
+        endpointMessage: responseData
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        error: error.error
+      });
+    }
   };
 
   const handle = (e, fn) => {
