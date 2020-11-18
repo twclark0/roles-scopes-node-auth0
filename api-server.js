@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const authConfig = require("./src/auth_config.json");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
+const jwtAuthz = require("express-jwt-authz");
 
 const app = express();
 
@@ -30,6 +31,11 @@ const authorizeAccessToken = jwt({
   algorithms: ["RS256"]
 });
 
+const checkPermissions = jwtAuthz(["read:messages", "read:appointments"], {
+  customScopeKey: "permissions",
+  checkAllScopes: true
+});
+
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors({ origin: appOrigin }));
@@ -43,6 +49,12 @@ app.get("/api/public", (req, res) => {
 app.get("/api/protected", authorizeAccessToken, (req, res) => {
   res.send({
     msg: "You called the protected endpoint!"
+  });
+});
+
+app.get("/api/role", authorizeAccessToken, checkPermissions, (req, res) => {
+  res.send({
+    msg: "You called the role endpoint!"
   });
 });
 

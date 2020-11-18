@@ -72,9 +72,54 @@ const ExternalApiComponent = () => {
     }
   };
 
+  const callRoleBasedEndpoint = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log(token);
+      const response = await fetch(`${apiOrigin}/api/role`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const responseData = await response.json();
+      setState({
+        ...state,
+        showResult: true,
+        endpointMessage: responseData
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        error: error.error
+      });
+    }
+  };
+
   const callPublicEndpoint = async () => {
     try {
       const response = await fetch(`${apiOrigin}/api/public`);
+      const responseData = await response.json();
+      setState({
+        ...state,
+        showResult: true,
+        endpointMessage: responseData
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        error: error.error
+      });
+    }
+  };
+
+  const callRoleBasedEndpoint = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${apiOrigin}/api/protected/role`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const responseData = await response.json();
       setState({
         ...state,
@@ -141,6 +186,24 @@ const ExternalApiComponent = () => {
             onClick={callProtectedEndpoint}
           >
             Ping Protected Endpoint
+          </Button>
+          <div>
+            <Button
+              color="primary"
+              className="mt-5"
+              onClick={callRoleBasedEndpoint}
+            >
+              Ping Role Based Endpoint
+            </Button>
+          </div>
+        </div>
+        <div>
+          <Button
+            color="primary"
+            className="mt-5"
+            onClick={callRoleBasedEndpoint}
+          >
+            Ping Role Based Endpoint
           </Button>
         </div>
       </div>
